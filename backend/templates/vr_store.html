@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>VR Store Tour</title>
+  <style>
+    body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
+    #info {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 10;
+      background: rgba(255,255,255,0.8);
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Return to Products Button -->
+  <button onclick="window.location.href='/products'" style="position:fixed;top:24px;left:24px;z-index:2100;background:#14b8a6;color:#fff;font-size:1.1rem;padding:10px 24px;border:none;border-radius:8px;box-shadow:0 2px 8px #b2f5ea;cursor:pointer;">&larr; Return to Products</button>
+  <div id="info">Click on a product cube to add it to your cart 🛒</div>
+  <canvas id="canvas"></canvas>
+  
+  <!-- ✅ Load JS as a module -->
+  <script type="module" src="/static/js/vr_store.js"></script>
+</body>
+</html>

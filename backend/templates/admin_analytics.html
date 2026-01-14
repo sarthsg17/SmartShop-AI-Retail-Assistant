@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Analytics Dashboard - SmartShop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gradient-to-br from-teal-50 to-white min-h-screen flex flex-col text-gray-900">
+
+  <!-- Navbar -->
+  <nav class="bg-teal-600 text-white px-6 py-4 flex justify-between items-center shadow-md">
+    <div class="text-2xl font-bold">SmartShop Admin</div>
+    <a href="/admin/dashboard" class="text-white hover:underline text-lg">← Back to Dashboard</a>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-grow px-6 py-10">
+    <div class="max-w-7xl mx-auto">
+      <h1 class="text-3xl font-bold text-teal-700 mb-2 text-center">📊 Analytics Overview</h1>
+      <p class="text-center text-gray-600 mb-10">Insights from recent user activity, sales, and engagement</p>
+
+      <!-- Visit Stats -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
+        <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition">
+          <h4 class="text-xl font-semibold mb-1">📅 Daily Visits</h4>
+          <p id="daily-visits" class="text-3xl text-teal-600 font-bold">-</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition">
+          <h4 class="text-xl font-semibold mb-1">📆 Weekly Visits</h4>
+          <p id="weekly-visits" class="text-3xl text-teal-600 font-bold">-</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition">
+          <h4 class="text-xl font-semibold mb-1">📅 Monthly Visits</h4>
+          <p id="monthly-visits" class="text-3xl text-teal-600 font-bold">-</p>
+        </div>
+      </div>
+
+      <!-- Top Viewed Products -->
+      <div class="bg-white rounded-xl shadow-md p-6 mb-10 hover:shadow-lg transition">
+        <h4 class="text-xl font-semibold text-gray-800 mb-4">🔥 Most Viewed Products</h4>
+        <ul id="most-viewed" class="list-disc pl-6 space-y-1 text-teal-700 text-lg font-medium"></ul>
+      </div>
+
+      <!-- Wishlist and Cart Count -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+        <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition">
+          <h4 class="text-xl font-semibold mb-2">💖 Wishlist Items</h4>
+          <p id="wishlist-count" class="text-2xl text-pink-500 font-bold">-</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition">
+          <h4 class="text-xl font-semibold mb-2">🛒 Cart Items</h4>
+          <p id="cart-count" class="text-2xl text-green-600 font-bold">-</p>
+        </div>
+      </div>
+
+      <!-- Sales Trend -->
+      <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition">
+        <h4 class="text-xl font-semibold text-gray-800 mb-4">📈 Weekly Sales Trend</h4>
+        <canvas id="salesChart" height="100"></canvas>
+      </div>
+    </div>
+  </main>
+
+  <!-- JS: Load Data -->
+  <script>
+    async function loadAnalytics() {
+      const res = await fetch("/admin/analytics/data");
+      const data = await res.json();
+
+      document.getElementById("daily-visits").textContent = data.daily_visits;
+      document.getElementById("weekly-visits").textContent = data.weekly_visits;
+      document.getElementById("monthly-visits").textContent = data.monthly_visits;
+      document.getElementById("wishlist-count").textContent = `💖 ${data.wishlist_count}`;
+      document.getElementById("cart-count").textContent = `🛒 ${data.cart_count}`;
+
+      const ul = document.getElementById("most-viewed");
+      ul.innerHTML = "";
+      data.most_viewed_products.forEach(p => {
+        const li = document.createElement("li");
+        li.innerHTML = `<strong>Product #${p.product_id}</strong> - ${p.clicks} views`;
+        ul.appendChild(li);
+      });
+
+      const ctx = document.getElementById("salesChart").getContext("2d");
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: data.sales_trend.map(d => d.date),
+          datasets: [{
+            label: "Sales",
+            data: data.sales_trend.map(d => d.sales),
+            backgroundColor: "rgba(13, 148, 136, 0.6)",
+            borderColor: "rgb(13, 148, 136)",
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+    }
+
+    window.onload = loadAnalytics;
+  </script>
+</body>
+</html>

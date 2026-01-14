@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard - SmartShop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-teal-50 to-white min-h-screen flex flex-col text-gray-900">
+
+  <!-- Navbar -->
+  <nav class="bg-teal-600 text-white px-6 py-4 flex justify-between items-center shadow-md">
+    <div class="text-2xl font-bold">SmartShop Admin</div>
+    <div class="space-x-4 text-lg">
+      <a href="/dashboard" class="hover:underline">Home</a>
+      <a href="/admin/users" class="hover:underline">Users</a>
+      <a href="/admin/analytics" class="hover:underline">Analytics</a>
+      <a href="/auth/logout" class="text-red-200 hover:underline">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-grow px-6 py-10">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-10">
+        <h1 class="text-4xl font-extrabold text-teal-700 mb-2">Welcome, Admin</h1>
+        <p class="text-gray-600 text-lg">Manage platform users, products, and insights effectively.</p>
+      </div>
+
+      <h2 class="text-2xl font-bold text-teal-800 mb-6 text-center">Admin Controls</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <!-- Manage Users -->
+        <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1 duration-300">
+          <div class="p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">👥 Manage Users</h3>
+            <p class="text-gray-600 mb-4">View, ban, or promote users and maintain account integrity.</p>
+            <a href="/admin/users"
+               class="inline-block bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 text-sm">
+              Go to Users
+            </a>
+          </div>
+        </div>
+
+        <!-- Upload Models -->
+        <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1 duration-300">
+          <div class="p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">📦 Upload 3D Models</h3>
+            <p class="text-gray-600 mb-4">Add or update interactive AR models for products.</p>
+            <a href="/admin/upload-model"
+               class="inline-block bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 text-sm">
+              Upload Model
+            </a>
+          </div>
+        </div>
+
+        <!-- Analytics -->
+        <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1 duration-300">
+          <div class="p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">📈 Analytics</h3>
+            <p class="text-gray-600 mb-4">Track usage trends, KPIs, and performance metrics.</p>
+            <a href="/admin/analytics"
+               class="inline-block bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 text-sm">
+              View Analytics
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

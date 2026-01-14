@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SmartShop Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.10.2/lottie.min.js"></script>
+  <style>
+    /* Smooth entry animation */
+    .fade-in {
+      animation: fadeIn 1s ease-in-out both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-teal-50 to-white min-h-screen text-gray-900">
+
+  <!-- Navbar -->
+  <nav class="bg-teal-600 text-white px-6 py-4 flex justify-between items-center shadow-lg">
+    <div class="text-3xl font-extrabold tracking-wide">SmartShop</div>
+    <div class="space-x-6 text-lg">
+      <a href="/" class="hover:underline">Home</a>
+      <a href="/login" class="hover:underline">Login</a>
+      <a href="/register" class="hover:underline">Register</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="text-center py-20 px-6 fade-in">
+    <h1 class="text-5xl font-extrabold text-gray-800 mb-4 leading-tight">Shop Smart. <br class="sm:hidden" />Live Smarter.</h1>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+      Welcome to <strong>SmartShop</strong> — your AI-powered shopping destination. Futuristic features, lightning-fast delivery & voice-assisted experience. Elevate your cart today.
+    </p>
+    <div class="flex justify-center space-x-4">
+      <a href="/login" class="bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-lg text-lg shadow-md transition">Login</a>
+      <a href="/register" class="bg-white hover:bg-gray-100 text-teal-600 px-6 py-3 rounded-lg text-lg border shadow-md transition">Register</a>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="bg-white py-16 px-6 shadow-inner fade-in">
+    <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">✨ Why Choose SmartShop?</h2>
+    <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+      <!-- Card -->
+      <div class="bg-gray-50 rounded-xl shadow hover:shadow-lg p-4 text-center transition transform hover:-translate-y-1">
+        <div id="lottie1" class="w-32 h-32 mx-auto mb-2"></div>
+        <h3 class="text-lg font-semibold mt-2">Smart Cart</h3>
+        <p class="text-sm text-gray-500 mt-1">Intelligent recommendations & personalization</p>
+      </div>
+      <div class="bg-gray-50 rounded-xl shadow hover:shadow-lg p-4 text-center transition transform hover:-translate-y-1">
+        <div id="lottie2" class="w-32 h-32 mx-auto mb-2"></div>
+        <h3 class="text-lg font-semibold mt-2">Trendy Bags</h3>
+        <p class="text-sm text-gray-500 mt-1">Explore the latest fashion & gear</p>
+      </div>
+      <div class="bg-gray-50 rounded-xl shadow hover:shadow-lg p-4 text-center transition transform hover:-translate-y-1">
+        <div id="lottie3" class="w-32 h-32 mx-auto mb-2"></div>
+        <h3 class="text-lg font-semibold mt-2">Fast Delivery</h3>
+        <p class="text-sm text-gray-500 mt-1">Speedy delivery powered by AI routing</p>
+      </div>
+      <div class="bg-gray-50 rounded-xl shadow hover:shadow-lg p-4 text-center transition transform hover:-translate-y-1">
+        <div id="lottie4" class="w-32 h-32 mx-auto mb-2"></div>
+        <h3 class="text-lg font-semibold mt-2">Secure Payment</h3>
+        <p class="text-sm text-gray-500 mt-1">100% safe transactions with fraud protection</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Assistant Toggle Button -->
+  <div class="fixed bottom-6 right-6 z-40">
+    <button onclick="toggleAI()" class="bg-teal-600 text-white p-3 rounded-full shadow-lg hover:bg-teal-700">
+      🤖
+    </button>
+  </div>
+
+  <!-- AI Assistant Box -->
+  <div class="aiBox fixed bottom-20 right-6 bg-white border shadow-lg rounded-lg p-4 w-80 hidden z-50">
+    <h3 class="text-lg font-semibold mb-2">🧠 Ask AI Assistant</h3>
+    <form class="aiForm" autocomplete="off" style="display: flex; gap: 0.5rem; align-items: center;">
+      <input class="aiInput" type="text" name="message" placeholder="Ask about your orders, account..." required class="w-full px-3 py-2 border border-gray-300 rounded mb-2" style="flex:1;" />
+      <button type="button" class="aiMic bg-gray-200 hover:bg-teal-100 rounded-full p-2 ml-1" title="Voice Search" tabindex="-1" style="height:2.5rem;width:2.5rem;display:flex;align-items:center;justify-content:center;">
+        <span class="micIcon">🎤</span>
+      </button>
+      <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Ask</button>
+    </form>
+    <div class="aiReply bg-gray-100 border rounded p-2 mt-2 text-sm max-h-40 overflow-y-auto hidden"></div>
+  </div>
+  <script>
+    function toggleAI() {
+      document.querySelector('.aiBox').classList.toggle('hidden');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.aiForm').forEach(function(form) {
+        form.onsubmit = async function(e) {
+          e.preventDefault();
+          const input = form.querySelector('.aiInput');
+          const replyBox = form.parentElement.querySelector('.aiReply');
+          replyBox.classList.remove('hidden');
+          replyBox.innerHTML = '<span class="text-gray-400">Thinking...</span>';
+          const res = await fetch('/api/ask?from_page=home', {
+            method: 'POST',
+            body: new URLSearchParams({ message: input.value })
+          });
+          const data = await res.json();
+          replyBox.innerHTML = '<strong>AI says:</strong><br>' + (data.reply || '<span class="text-red-500">Sorry, no reply.</span>');
+          input.value = '';
+          return false;
+        };
+        // Voice search logic
+        const micBtn = form.querySelector('.aiMic');
+        const micIcon = micBtn.querySelector('.micIcon');
+        let recognition, recognizing = false;
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+          recognition = new SpeechRecognition();
+          recognition.lang = 'en-US';
+          recognition.interimResults = false;
+          recognition.maxAlternatives = 1;
+          recognition.onstart = function() {
+            recognizing = true;
+            micIcon.textContent = '🔴';
+            micBtn.classList.add('bg-red-100');
+          };
+          recognition.onend = function() {
+            recognizing = false;
+            micIcon.textContent = '🎤';
+            micBtn.classList.remove('bg-red-100');
+          };
+          recognition.onerror = function(e) {
+            recognizing = false;
+            micIcon.textContent = '🎤';
+            micBtn.classList.remove('bg-red-100');
+          };
+          recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript;
+            form.querySelector('.aiInput').value = transcript;
+            // Optionally auto-submit:
+            // form.requestSubmit();
+          };
+          micBtn.onclick = function(ev) {
+            ev.preventDefault();
+            if (recognizing) {
+              recognition.stop();
+            } else {
+              recognition.start();
+            }
+          };
+        } else {
+          micBtn.disabled = true;
+          micBtn.title = 'Voice search not supported in this browser';
+        }
+      });
+    });
+  </script>
+
+  <!-- Footer -->
+  <footer class="bg-teal-600 text-white text-center py-4 mt-12">
+    &copy; {{ year or 2025 }} SmartShop. All rights reserved.
+  </footer>
+
+  <!-- Lottie Animations -->
+  <script>
+    const animations = [
+      { id: 'lottie1', path: '/static/lottie/cart.json' },
+      { id: 'lottie2', path: '/static/lottie/bag.json' },
+      { id: 'lottie3', path: '/static/lottie/delivery.json' },
+      { id: 'lottie4', path: '/static/lottie/payment.json' }
+    ];
+
+    animations.forEach(({ id, path }) => {
+      lottie.loadAnimation({
+        container: document.getElementById(id),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path
+      });
+    });
+  </script>
+
+</body>
+</html>

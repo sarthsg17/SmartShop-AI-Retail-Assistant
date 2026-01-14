@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Register - SmartShop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-teal-50 to-white min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <nav class="bg-teal-600 text-white px-6 py-4 flex justify-between items-center shadow-md">
+    <div class="text-2xl font-bold">SmartShop</div>
+    <div class="space-x-4 text-lg">
+      <a href="/" class="hover:underline">Home</a>
+      <a href="/login" class="hover:underline">Login</a>
+      <a href="/register" class="underline font-semibold">Register</a>
+    </div>
+  </nav>
+
+  <!-- Registration Section -->
+  <main class="flex-grow flex items-center justify-center px-4">
+    <div class="w-full max-w-md bg-white p-8 rounded-xl shadow-md mt-12">
+      <h2 class="text-3xl font-bold text-center text-teal-700 mb-6">Join SmartShop 🚀</h2>
+
+      {% if error %}
+        <p class="text-red-600 text-sm text-center mb-4">{{ error }}</p>
+      {% endif %}
+      {% if msg %}
+        <p class="text-green-600 text-sm text-center mb-4">{{ msg }}</p>
+      {% endif %}
+
+      <form action="/auth/register" method="post" class="space-y-4">
+        <div>
+          <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+          <input type="text" name="username" id="username" required
+                 class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" />
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" name="email" id="email" required
+                 class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" />
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+          <input type="password" name="password" id="password" required
+                 class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" />
+        </div>
+
+        <div class="text-center">
+          <button type="submit"
+                  class="w-full bg-teal-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-teal-700 transition shadow">
+            Register
+          </button>
+        </div>
+      </form>
+
+      <p class="text-center text-sm text-gray-600 mt-6">
+        Already have an account? <a href="/login" class="text-teal-600 hover:underline">Login here</a>
+      </p>
+    </div>
+  </main>
+
+</body>
+</html>
